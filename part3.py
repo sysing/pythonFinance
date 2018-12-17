@@ -6,23 +6,18 @@ import pandas_datareader.data as web
 
 style.use('ggplot')
 
-start = dt.datetime(2000,1,1)
-end = dt.datetime(2016,12,31)
-
-# df = web.DataReader('TSLA', 'robinhood', start=start, end=end)
-# df.reset_index(inplace=True)
-# df.drop(['symbol', 'interpolated', 'session'], axis=1, inplace=True)
-# df.rename(index=str, columns={'close_price': 'Close', 
-#                              'high_price': 'High',
-#                              'low_price': 'Low',
-#                              'open_price': 'Open',
-#                              'volume': 'Volume',
-#                              'begins_at': 'Date'}, inplace=True)
-# df.set_index('Date', inplace=True)
-
-# df.to_csv('tesla.csv')
 df = pd.read_csv('tesla.csv', parse_dates=True, index_col=0)
 
-print(df.head())
-df['Close'].plot()
+df['100ma'] = df['Close'].rolling(window=100,min_periods=0).mean()
+df.dropna(inplace=True) #remove those have NaN value
+print(df.tail())
+
+ax1 = plt.subplot2grid((6,1),(0,0), rowspan = 5 , colspan =1)
+ax2 = plt.subplot2grid((6,1),(5,0), rowspan = 1 , colspan =1, sharex=ax1)
+
+ax1.plot(df.index, df['Close'])
+ax1.plot(df.index, df['100ma'])
+
+ax2.bar(df.index, df['Volume'])
+
 plt.show()
