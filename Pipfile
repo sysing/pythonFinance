@@ -7,6 +7,12 @@ verify_ssl = true
 pylint = "<2.0.0"
 
 [packages]
+pandas = "*"
+pandas-datareader = "*"
+matplotlib = "*"
+numpy = "*"
+beautifulsoup4 = "*"
+scikit-learn = "*"
 
 [requires]
 python_version = "2.7"
